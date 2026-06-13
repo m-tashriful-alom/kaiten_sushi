@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,15 +16,10 @@
     --wood: #8B5E3C;
     --wood-light: #C49A6C;
     --belt: #2B2B2B;
-    --plate-1: #FFFFFF;
-    --plate-2: #E8D5C4;
-    --plate-3: #D4E8D5;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--cream);
@@ -41,7 +36,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.2rem 4rem;
-    background: rgba(253,246,236,0.92);
+    background: rgba(253,246,236,0.95);
     backdrop-filter: blur(8px);
     border-bottom: 1px solid rgba(192,57,43,0.15);
   }
@@ -51,6 +46,8 @@
     color: var(--red);
     letter-spacing: 0.04em;
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .nav-links { display: flex; gap: 2.5rem; list-style: none; }
   .nav-links a {
@@ -64,6 +61,70 @@
   }
   .nav-links a:hover { color: var(--red); }
 
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+    z-index: 110;
+  }
+  .hamburger span {
+    display: block;
+    height: 2px;
+    background: var(--charcoal);
+    border-radius: 2px;
+    transition: all 0.28s ease;
+    transform-origin: center;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── MOBILE NAV DRAWER ── */
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,246,236,0.98);
+    z-index: 105;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.28s ease;
+  }
+  .mobile-drawer.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-drawer a {
+    font-family: 'Zen Antique Soft', serif;
+    font-size: 2rem;
+    color: var(--charcoal);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .mobile-drawer a:hover { color: var(--red); }
+  .mobile-drawer .drawer-kanji {
+    font-family: 'Zen Antique Soft', serif;
+    font-size: 5rem;
+    color: rgba(192,57,43,0.08);
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    pointer-events: none;
+  }
+
   /* ── HERO ── */
   #hero {
     min-height: 100vh;
@@ -75,14 +136,12 @@
     overflow: hidden;
     background: var(--cream);
   }
-
   .hero-content {
     padding: 0 4rem;
     max-width: 700px;
     position: relative;
     z-index: 2;
   }
-
   .hero-tag {
     display: inline-block;
     font-size: 0.75rem;
@@ -95,7 +154,6 @@
     padding: 0.3rem 0.8rem;
     border-radius: 2px;
   }
-
   h1 {
     font-family: 'Zen Antique Soft', serif;
     font-size: clamp(3.5rem, 7vw, 6rem);
@@ -103,9 +161,7 @@
     color: var(--charcoal);
     margin-bottom: 1.5rem;
   }
-
   h1 span { color: var(--red); }
-
   .hero-sub {
     font-size: 1.1rem;
     color: var(--muted);
@@ -114,13 +170,7 @@
     margin-bottom: 2.5rem;
     font-weight: 300;
   }
-
-  .hero-cta {
-    display: inline-flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
+  .hero-cta { display: inline-flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
   .btn-primary {
     background: var(--red);
     color: #fff;
@@ -135,7 +185,6 @@
     transition: background 0.2s;
   }
   .btn-primary:hover { background: var(--red-dark); }
-
   .btn-outline {
     color: var(--charcoal);
     padding: 0.85rem 2rem;
@@ -149,8 +198,6 @@
     transition: all 0.2s;
   }
   .btn-outline:hover { background: var(--charcoal); color: #fff; }
-
-  /* big decorative kanji */
   .hero-kanji {
     position: absolute;
     right: -1rem;
@@ -165,30 +212,19 @@
     z-index: 1;
   }
 
-  /* ── CONVEYOR BELT ANIMATION ── */
-  .belt-section {
-    width: 100%;
-    position: relative;
-    margin: 3rem 0 0;
-    z-index: 2;
-  }
-
-  /* wooden counter top */
+  /* ── CONVEYOR BELT ── */
+  .belt-section { width: 100%; position: relative; margin: 3rem 0 0; z-index: 2; }
   .counter {
     background: linear-gradient(180deg, #D4A96A 0%, #B8864A 40%, #9A6E35 100%);
     height: 18px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-    position: relative;
-    z-index: 4;
+    position: relative; z-index: 4;
   }
   .counter::before {
     content: '';
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background: repeating-linear-gradient(90deg, transparent 0, transparent 40px, rgba(255,255,255,0.05) 40px, rgba(255,255,255,0.05) 41px);
   }
-
-  /* belt track */
   .belt-track {
     background: var(--belt);
     height: 90px;
@@ -198,28 +234,13 @@
     align-items: center;
     box-shadow: inset 0 4px 12px rgba(0,0,0,0.5), inset 0 -4px 12px rgba(0,0,0,0.5);
   }
-
-  /* Belt texture lines */
   .belt-track::before {
     content: '';
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 28px,
-      rgba(255,255,255,0.04) 28px,
-      rgba(255,255,255,0.04) 30px
-    );
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(90deg, transparent 0, transparent 28px, rgba(255,255,255,0.04) 28px, rgba(255,255,255,0.04) 30px);
     animation: belt-move 2s linear infinite;
   }
-
-  @keyframes belt-move {
-    from { background-position: 0 0; }
-    to { background-position: 30px 0; }
-  }
-
-  /* plates container */
+  @keyframes belt-move { from { background-position: 0 0; } to { background-position: 30px 0; } }
   .plates-wrapper {
     display: flex;
     align-items: center;
@@ -229,434 +250,129 @@
     animation: ride 28s linear infinite;
     will-change: transform;
   }
-
-  @keyframes ride {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  .plate-item {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 28px;
-    position: relative;
-  }
-
-  /* The plate */
+  @keyframes ride { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .plate-item { display: inline-flex; flex-direction: column; align-items: center; margin: 0 28px; position: relative; }
   .plate {
-    width: 72px;
-    height: 72px;
+    width: 72px; height: 72px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     position: relative;
     box-shadow: 0 3px 10px rgba(0,0,0,0.45), inset 0 1px 2px rgba(255,255,255,0.3);
   }
-  .plate::after {
-    content: '';
-    position: absolute;
-    inset: 5px;
-    border-radius: 50%;
-    border: 1.5px solid rgba(255,255,255,0.18);
-  }
+  .plate::after { content: ''; position: absolute; inset: 5px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.18); }
   .plate-white  { background: radial-gradient(circle at 35% 30%, #ffffff, #e8e8e8); }
   .plate-tan    { background: radial-gradient(circle at 35% 30%, #F0D9B5, #C8A97A); }
   .plate-green  { background: radial-gradient(circle at 35% 30%, #C8DFCA, #9ABD9D); }
   .plate-red    { background: radial-gradient(circle at 35% 30%, #F5B8B8, #D97070); }
   .plate-blue   { background: radial-gradient(circle at 35% 30%, #B8D4F5, #7099D9); }
+  .sushi-svg { width: 44px; height: 44px; }
+  .counter-bottom { background: linear-gradient(180deg, #9A6E35 0%, #7A5228 60%, #5C3C1E 100%); height: 14px; box-shadow: 0 6px 18px rgba(0,0,0,0.3); }
 
-  /* Sushi SVG items */
-  .sushi-svg {
-    width: 44px;
-    height: 44px;
-  }
-
-  /* bottom counter */
-  .counter-bottom {
-    background: linear-gradient(180deg, #9A6E35 0%, #7A5228 60%, #5C3C1E 100%);
-    height: 14px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-  }
-
-  /* ── SECTION SHARED ── */
+  /* ── SECTIONS ── */
   section { padding: 6rem 4rem; }
-
-  .section-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--red);
-    font-weight: 500;
-    margin-bottom: 0.8rem;
-  }
-
-  h2 {
-    font-family: 'Zen Antique Soft', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    line-height: 1.15;
-    margin-bottom: 1.5rem;
-  }
+  .section-label { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); font-weight: 500; margin-bottom: 0.8rem; }
+  h2 { font-family: 'Zen Antique Soft', serif; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; margin-bottom: 1.5rem; }
 
   /* ── ABOUT ── */
-  #about {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-    background: var(--cream);
-  }
-
-  .about-img {
-    aspect-ratio: 4/3;
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-  }
-  .about-img img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  #about { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; background: var(--cream); }
+  .about-img { aspect-ratio: 4/3; border-radius: 4px; overflow: hidden; position: relative; }
+  .about-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .about-img-placeholder {
     width: 100%; height: 100%;
     background: linear-gradient(135deg, #C49A6C22 0%, #C0392B11 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    color: var(--muted);
-    font-size: 0.85rem;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.5rem; color: var(--muted); font-size: 0.85rem;
     border: 1.5px dashed rgba(192,57,43,0.2);
   }
-
-  .about-text p {
-    color: var(--muted);
-    line-height: 1.8;
-    font-weight: 300;
-    margin-bottom: 1rem;
-    font-size: 1.05rem;
-  }
-
-  .stats {
-    display: flex;
-    gap: 2.5rem;
-    margin-top: 2.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(192,57,43,0.15);
-  }
-  .stat-num {
-    font-family: 'Zen Antique Soft', serif;
-    font-size: 2.2rem;
-    color: var(--red);
-    display: block;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-  }
-  .stat-label {
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-  }
+  .about-text p { color: var(--muted); line-height: 1.8; font-weight: 300; margin-bottom: 1rem; font-size: 1.05rem; }
+  .stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(192,57,43,0.15); flex-wrap: wrap; }
+  .stat-num { font-family: 'Zen Antique Soft', serif; font-size: 2.2rem; color: var(--red); display: block; line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
 
   /* ── MENU ── */
-  #menu {
-    background: var(--charcoal);
-    color: #fff;
-  }
+  #menu { background: var(--charcoal); color: #fff; }
   #menu .section-label { color: #E07060; }
   #menu h2 { color: #fff; }
-
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5px;
-    margin-top: 3rem;
-    background: rgba(255,255,255,0.06);
-    border: 1.5px solid rgba(255,255,255,0.06);
-  }
-
-  .menu-card {
-    background: #242424;
-    padding: 2rem;
-    transition: background 0.2s;
-  }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5px; margin-top: 3rem; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.06); }
+  .menu-card { background: #242424; padding: 2rem; transition: background 0.2s; }
   .menu-card:hover { background: #2C2C2C; }
-
-  .menu-card-img {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: cover;
-    margin-bottom: 1.2rem;
-    display: block;
-    border-radius: 2px;
-  }
-  .menu-card-img-placeholder {
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: rgba(255,255,255,0.05);
-    border: 1.5px dashed rgba(255,255,255,0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.2rem;
-    border-radius: 2px;
-    color: rgba(255,255,255,0.3);
-    font-size: 0.8rem;
-    gap: 0.4rem;
-  }
+  .menu-card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; margin-bottom: 1.2rem; display: block; border-radius: 2px; }
+  .menu-card-img-placeholder { width: 100%; aspect-ratio: 4/3; background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1.2rem; border-radius: 2px; color: rgba(255,255,255,0.3); font-size: 0.8rem; gap: 0.4rem; }
   .img-icon { font-size: 1.8rem; opacity: 0.3; }
-
-  .menu-category {
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #E07060;
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-  }
-  .menu-card h3 {
-    font-family: 'Zen Antique Soft', serif;
-    font-size: 1.3rem;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-  .menu-card p {
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.6;
-    font-weight: 300;
-  }
+  .menu-category { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: #E07060; margin-bottom: 0.4rem; font-weight: 500; }
+  .menu-card h3 { font-family: 'Zen Antique Soft', serif; font-size: 1.3rem; color: #fff; margin-bottom: 0.5rem; }
+  .menu-card p { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.6; font-weight: 300; }
 
   /* ── PRICING ── */
-  #pricing {
-    background: #fff;
-    text-align: center;
-  }
-
-  .pricing-grid {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    margin-top: 3.5rem;
-    flex-wrap: wrap;
-  }
-
-  .pricing-card {
-    border: 1.5px solid rgba(192,57,43,0.18);
-    border-radius: 4px;
-    padding: 2.5rem 2rem;
-    width: 260px;
-    text-align: center;
-    transition: box-shadow 0.2s;
-  }
+  #pricing { background: #fff; text-align: center; }
+  .pricing-grid { display: flex; gap: 2rem; justify-content: center; margin-top: 3.5rem; flex-wrap: wrap; }
+  .pricing-card { border: 1.5px solid rgba(192,57,43,0.18); border-radius: 4px; padding: 2.5rem 2rem; width: 260px; text-align: center; transition: box-shadow 0.2s; }
   .pricing-card:hover { box-shadow: 0 8px 32px rgba(192,57,43,0.1); }
-  .pricing-card.featured {
-    border-color: var(--red);
-    background: var(--red);
-    color: #fff;
-    transform: translateY(-8px);
-  }
-  .pricing-card.featured .price-label,
-  .pricing-card.featured .price-sub,
-  .pricing-card.featured .price-desc { color: rgba(255,255,255,0.8); }
-
-  .price-label {
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 0.6rem;
-  }
-  .price-tier {
-    font-family: 'Zen Antique Soft', serif;
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  .price-amount {
-    font-size: 3rem;
-    font-weight: 300;
-    line-height: 1;
-    margin-bottom: 0.25rem;
-  }
+  .pricing-card.featured { border-color: var(--red); background: var(--red); color: #fff; transform: translateY(-8px); }
+  .pricing-card.featured .price-label, .pricing-card.featured .price-sub, .pricing-card.featured .price-desc { color: rgba(255,255,255,0.8); }
+  .price-label { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 0.6rem; }
+  .price-tier { font-family: 'Zen Antique Soft', serif; font-size: 1.5rem; margin-bottom: 1rem; }
+  .price-amount { font-size: 3rem; font-weight: 300; line-height: 1; margin-bottom: 0.25rem; }
   .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
-  .price-sub {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-  }
-  .price-features {
-    list-style: none;
-    font-size: 0.88rem;
-    line-height: 2;
-    margin-bottom: 2rem;
-    color: var(--muted);
-  }
+  .price-sub { font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .price-features { list-style: none; font-size: 0.88rem; line-height: 2; margin-bottom: 2rem; color: var(--muted); }
   .pricing-card.featured .price-features { color: rgba(255,255,255,0.85); }
-  .price-desc {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 1rem;
-  }
 
   /* ── GALLERY ── */
-  #gallery {
-    background: var(--cream);
-    padding-bottom: 4rem;
-  }
-
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 220px 220px;
-    gap: 8px;
-    margin-top: 2.5rem;
-  }
-
-  .g1 { grid-column: 1/6; grid-row: 1/2; }
-  .g2 { grid-column: 6/9; grid-row: 1/2; }
-  .g3 { grid-column: 9/13; grid-row: 1/3; }
-  .g4 { grid-column: 1/4; grid-row: 2/3; }
-  .g5 { grid-column: 4/6; grid-row: 2/3; }
-  .g6 { grid-column: 6/9; grid-row: 2/3; }
-
-  .gallery-cell {
-    overflow: hidden;
-    border-radius: 3px;
-    position: relative;
-  }
-  .gallery-cell img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s;
-    display: block;
-  }
+  #gallery { background: var(--cream); padding-bottom: 4rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: 220px 220px; gap: 8px; margin-top: 2.5rem; }
+  .g1 { grid-column: 1/6; grid-row: 1/2; } .g2 { grid-column: 6/9; grid-row: 1/2; } .g3 { grid-column: 9/13; grid-row: 1/3; }
+  .g4 { grid-column: 1/4; grid-row: 2/3; } .g5 { grid-column: 4/6; grid-row: 2/3; } .g6 { grid-column: 6/9; grid-row: 2/3; }
+  .gallery-cell { overflow: hidden; border-radius: 3px; position: relative; }
+  .gallery-cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; display: block; }
   .gallery-cell:hover img { transform: scale(1.04); }
-  .gallery-cell-placeholder {
-    width: 100%; height: 100%;
-    background: linear-gradient(135deg, rgba(196,154,108,0.15), rgba(192,57,43,0.08));
-    border: 1.5px dashed rgba(192,57,43,0.15);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 0.8rem;
-    gap: 0.4rem;
-  }
+  .gallery-cell-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, rgba(196,154,108,0.15), rgba(192,57,43,0.08)); border: 1.5px dashed rgba(192,57,43,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8rem; gap: 0.4rem; }
 
-  /* ── HOURS / CONTACT ── */
-  #contact {
-    background: var(--charcoal);
-    color: #fff;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: start;
-  }
+  /* ── CONTACT ── */
+  #contact { background: var(--charcoal); color: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
   #contact .section-label { color: #E07060; }
   #contact h2 { color: #fff; }
-
-  .hours-table {
-    width: 100%;
-    margin-top: 1.5rem;
-    border-collapse: collapse;
-  }
-  .hours-table tr {
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-  .hours-table td {
-    padding: 0.7rem 0;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.6);
-    font-weight: 300;
-  }
+  .hours-table { width: 100%; margin-top: 1.5rem; border-collapse: collapse; }
+  .hours-table tr { border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .hours-table td { padding: 0.7rem 0; font-size: 0.9rem; color: rgba(255,255,255,0.6); font-weight: 300; }
   .hours-table td:first-child { color: rgba(255,255,255,0.85); font-weight: 400; }
   .hours-table td:last-child { text-align: right; }
-
-  .contact-info {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .contact-line {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.6);
-    font-weight: 300;
-  }
-  .contact-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--red);
-    flex-shrink: 0;
-  }
-
-  .reservation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
+  .contact-info { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .contact-line { display: flex; align-items: center; gap: 0.8rem; font-size: 0.9rem; color: rgba(255,255,255,0.6); font-weight: 300; }
+  .contact-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+  .reservation-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
   .form-row { display: flex; gap: 1rem; }
-  .form-row input,
-  .reservation-form input,
-  .reservation-form select {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 3px;
-    padding: 0.8rem 1rem;
-    color: #fff;
-    font-size: 0.9rem;
-    font-family: 'DM Sans', sans-serif;
-    flex: 1;
-    transition: border-color 0.2s;
-    outline: none;
-    width: 100%;
+  .form-row input, .reservation-form input, .reservation-form select {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px; padding: 0.8rem 1rem; color: #fff; font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif; flex: 1; transition: border-color 0.2s; outline: none; width: 100%;
   }
-  .form-row input:focus,
-  .reservation-form input:focus,
-  .reservation-form select:focus { border-color: rgba(192,57,43,0.6); }
+  .form-row input:focus, .reservation-form input:focus, .reservation-form select:focus { border-color: rgba(192,57,43,0.6); }
   .reservation-form select option { background: #1C1C1C; }
 
   /* ── FOOTER ── */
-  footer {
-    background: #111;
-    color: rgba(255,255,255,0.4);
-    text-align: center;
-    padding: 2rem;
-    font-size: 0.82rem;
-    letter-spacing: 0.08em;
-  }
+  footer { background: #111; color: rgba(255,255,255,0.4); text-align: center; padding: 2rem; font-size: 0.82rem; letter-spacing: 0.08em; }
   footer span { color: var(--red); }
 
   /* ── RESPONSIVE ── */
-  @media (max-width: 900px) {
+  @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-drawer { display: flex; }
+
     section { padding: 4rem 1.5rem; }
     #about { grid-template-columns: 1fr; gap: 2.5rem; }
     #contact { grid-template-columns: 1fr; gap: 3rem; }
     .hero-content { padding: 0 1.5rem; }
-    .gallery-grid {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto;
-    }
-    .g1,.g2,.g3,.g4,.g5,.g6 {
-      grid-column: auto;
-      grid-row: auto;
-      height: 180px;
-    }
-    h1 { font-size: 3rem; }
+    h1 { font-size: 2.8rem; }
+
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .g1,.g2,.g3,.g4,.g5,.g6 { grid-column: auto; grid-row: auto; height: 160px; }
+
+    .form-row { flex-direction: column; }
+    .pricing-card.featured { transform: translateY(0); }
+    .stats { gap: 1.5rem; }
   }
 </style>
 </head>
@@ -666,23 +382,36 @@
 <nav>
   <a href="#hero" class="nav-logo">回転寿司</a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#menu">Menu</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#contact">Reserve</a></li>
+    <li><a href="#about">Chi Siamo</a></li>
+    <li><a href="#menu">Menù</a></li>
+    <li><a href="#pricing">Prezzi</a></li>
+    <li><a href="#gallery">Galleria</a></li>
+    <li><a href="#contact">Prenota</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Apri menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <a href="#about" class="drawer-link">Chi Siamo</a>
+  <a href="#menu" class="drawer-link">Menù</a>
+  <a href="#pricing" class="drawer-link">Prezzi</a>
+  <a href="#gallery" class="drawer-link">Galleria</a>
+  <a href="#contact" class="drawer-link">Prenota</a>
+  <div class="drawer-kanji">寿</div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-content">
-    <div class="hero-tag">All You Can Eat · Kaiten Style</div>
-    <h1>Fresh Sushi,<br><span>Always</span><br>in Motion.</h1>
-    <p class="hero-sub">Step up to the belt, watch the plates glide by, and eat as much as your heart desires. Authentic kaiten sushi experience in the heart of the city.</p>
+    <div class="hero-tag">All You Can Eat · Kaiten Style · 回転寿司</div>
+    <h1>Sushi Fresco,<br><span>Sempre</span><br>in Movimento.</h1>
+    <p class="hero-sub">Siediti al nastro, guarda i piatti scorrere davanti a te e mangia quanto vuoi. Un'autentica esperienza <em>kaiten</em> — la tradizione giapponese del sushi itinerante — nel cuore della città.</p>
     <div class="hero-cta">
-      <a href="#contact" class="btn-primary">Reserve a Seat</a>
-      <a href="#menu" class="btn-outline">View Menu</a>
+      <a href="#contact" class="btn-primary">Prenota un Posto</a>
+      <a href="#menu" class="btn-outline">Vedi il Menù</a>
     </div>
   </div>
   <div class="hero-kanji">寿</div>
@@ -691,9 +420,7 @@
   <div class="belt-section">
     <div class="counter"></div>
     <div class="belt-track">
-      <div class="plates-wrapper" id="platesWrapper">
-        <!-- Plates are injected by JS so we can easily duplicate for seamless loop -->
-      </div>
+      <div class="plates-wrapper" id="platesWrapper"></div>
     </div>
     <div class="counter-bottom"></div>
   </div>
@@ -702,46 +429,34 @@
 <!-- ABOUT -->
 <section id="about">
   <div class="about-img">
-    <img src="image1.jpg" alt="Kaiten Sushi interior" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-    <div class="about-img-placeholder" style="display:none;">
-      <div class="img-icon">🖼</div>
-      image1.jpg
-    </div>
+    <img src="image1.jpg" alt="Interno Kaiten Sushi" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="about-img-placeholder" style="display:none;"><div class="img-icon">🖼</div>image1.jpg</div>
   </div>
   <div class="about-text">
-    <p class="section-label">Our Story</p>
-    <h2>Where Tradition Meets the Turning Belt</h2>
-    <p>Born from a love of Japanese culture and the joy of communal eating, Kaiten Sushi brings the authentic kaiten experience to your neighbourhood. Every plate that passes your seat was freshly made minutes ago.</p>
-    <p>Our chefs craft each piece by hand — from classic nigiri and maki to seasonal specialties — and send them around the table so you can eat at your own pace, at your own pleasure.</p>
+    <p class="section-label">La Nostra Storia</p>
+    <h2>Dove la Tradizione Incontra il Nastro Rotante</h2>
+    <p>Nati dall'amore per la cultura giapponese e il piacere del mangiare insieme, portiamo l'autentica esperienza <em>kaiten</em> nel tuo quartiere. Ogni piatto che passa davanti a te è stato preparato dai nostri chef pochi minuti fa, con la cura e la maestria dell'<em>ikigai</em> — la passione che dà senso al lavoro.</p>
+    <p>I nostri itamae (maestri sushi) creano ogni pezzo a mano — dal classico nigiri e maki alle specialità di stagione — e li affidano al nastro perché tu possa mangiare al tuo ritmo, con tutto il piacere che meriti.</p>
     <div class="stats">
-      <div>
-        <span class="stat-num">80+</span>
-        <span class="stat-label">Dishes</span>
-      </div>
-      <div>
-        <span class="stat-num">∞</span>
-        <span class="stat-label">Helpings</span>
-      </div>
-      <div>
-        <span class="stat-num">2h</span>
-        <span class="stat-label">Dining Time</span>
-      </div>
+      <div><span class="stat-num">80+</span><span class="stat-label">Piatti</span></div>
+      <div><span class="stat-num">∞</span><span class="stat-label">Porzioni</span></div>
+      <div><span class="stat-num">2h</span><span class="stat-label">Al Tavolo</span></div>
     </div>
   </div>
 </section>
 
 <!-- MENU -->
 <section id="menu">
-  <p class="section-label">On the Belt Today</p>
-  <h2>Our Signature Plates</h2>
+  <p class="section-label">Oggi sul Nastro</p>
+  <h2>I Nostri Piatti Signature</h2>
   <div class="menu-grid">
 
     <div class="menu-card">
-      <img src="image2.jpg" alt="Salmon Nigiri" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <img src="image2.jpg" alt="Nigiri Salmone" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍣</span>image2.jpg</div>
       <p class="menu-category">Nigiri</p>
-      <h3>Salmon Nigiri</h3>
-      <p>Atlantic salmon over seasoned sushi rice, finished with a touch of wasabi and a pinch of sea salt.</p>
+      <h3>Nigiri Salmone</h3>
+      <p>Salmone atlantico su riso da sushi condito, rifinito con un tocco di wasabi e un pizzico di sale marino. Semplicità e <em>umami</em> perfetti.</p>
     </div>
 
     <div class="menu-card">
@@ -749,23 +464,23 @@
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍱</span>image3.jpg</div>
       <p class="menu-category">Maki Roll</p>
       <h3>Dragon Roll</h3>
-      <p>Tempura shrimp, cucumber and avocado wrapped in nori and rice, topped with sliced avocado and eel sauce.</p>
+      <p>Gambero tempura, cetriolo e avocado avvolti in nori e riso, ricoperti di avocado a fette e salsa di anguilla. Una creazione degna di un <em>itamae</em>.</p>
     </div>
 
     <div class="menu-card">
-      <img src="image4.jpg" alt="Tuna Sashimi" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <img src="image4.jpg" alt="Sashimi Tonno" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🐟</span>image4.jpg</div>
       <p class="menu-category">Sashimi</p>
-      <h3>Bluefin Tuna</h3>
-      <p>Premium bluefin tuna, sliced thick and served with freshly grated wasabi and pickled ginger.</p>
+      <h3>Tonno Pinna Blu</h3>
+      <p>Pregiato tonno bluefin, affettato spesso e servito con wasabi grattugiato fresco e zenzero marinato. <em>Hon-maguro</em> — il re del sashimi.</p>
     </div>
 
     <div class="menu-card">
-      <img src="image5.jpg" alt="Edamame" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <img src="image5.jpg" alt="Edamame e Miso" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🥗</span>image5.jpg</div>
-      <p class="menu-category">Sides</p>
-      <h3>Edamame & Miso</h3>
-      <p>Salted edamame pods and a warming bowl of dashi miso soup with silken tofu and wakame seaweed.</p>
+      <p class="menu-category">Contorni</p>
+      <h3>Edamame &amp; Miso</h3>
+      <p>Baccelli di edamame salati e una calda ciotola di zuppa di miso dashi con tofu di seta e alga wakame. Il benvenuto perfetto.</p>
     </div>
 
     <div class="menu-card">
@@ -773,15 +488,15 @@
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🌶</span>image6.jpg</div>
       <p class="menu-category">Maki Roll</p>
       <h3>Spicy Tuna Crunch</h3>
-      <p>Tuna, sriracha mayo and cucumber, topped with crispy tempura flakes and a drizzle of chilli oil.</p>
+      <p>Tonno, mayo sriracha e cetriolo, con scaglie di tempura croccante e un filo di olio al peperoncino. Un'esplosione di <em>karai</em> — il piccante giapponese.</p>
     </div>
 
     <div class="menu-card">
-      <img src="image7.jpg" alt="Matcha Ice Cream" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <img src="image7.jpg" alt="Gelato Matcha" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍵</span>image7.jpg</div>
       <p class="menu-category">Dessert</p>
-      <h3>Matcha Ice Cream</h3>
-      <p>House-made ceremonial grade matcha ice cream, served with red bean paste and a dusting of kinako.</p>
+      <h3>Gelato al Matcha</h3>
+      <p>Gelato artigianale con matcha di grado ceremoniale, servito con pasta di fagioli rossi e una spolverata di kinako. Dolcezza autentica.</p>
     </div>
 
   </div>
@@ -790,50 +505,49 @@
 <!-- PRICING -->
 <section id="pricing">
   <p class="section-label">All You Can Eat</p>
-  <h2>Simple, Honest Pricing</h2>
-  <p style="color: var(--muted); max-width: 480px; margin: 0 auto; font-weight:300; font-size:1.05rem;">Unlimited plates, 2 hours at the belt. Drinks ordered separately.</p>
-
+  <h2>Prezzi Chiari e Onesti</h2>
+  <p style="color: var(--muted); max-width: 520px; margin: 0 auto; font-weight:300; font-size:1.05rem;">Piatti illimitati, 2 ore al nastro. Le bevande si ordinano separatamente. Nello spirito del <em>motenashi</em> — l'ospitalità giapponese senza riserve.</p>
   <div class="pricing-grid">
 
     <div class="pricing-card">
-      <p class="price-label">Weekday Lunch</p>
-      <p class="price-tier">Lunch Belt</p>
+      <p class="price-label">Pranzo Feriale</p>
+      <p class="price-tier">Pranzo Belt</p>
       <p class="price-amount"><sup>€</sup>18</p>
-      <p class="price-sub">per person · Mon–Fri until 3 pm</p>
+      <p class="price-sub">a persona · Lun–Ven fino alle 15:00</p>
       <ul class="price-features">
-        <li>Full belt access</li>
-        <li>2 hours dining</li>
-        <li>Miso soup included</li>
+        <li>Accesso completo al nastro</li>
+        <li>2 ore al tavolo</li>
+        <li>Zuppa di miso inclusa</li>
       </ul>
-      <a href="#contact" class="btn-primary" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem;">Book Lunch</a>
+      <a href="#contact" class="btn-primary" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem;">Prenota il Pranzo</a>
     </div>
 
     <div class="pricing-card featured">
-      <p class="price-label">Most popular</p>
-      <p class="price-tier">Dinner Belt</p>
+      <p class="price-label">Più scelto</p>
+      <p class="price-tier">Cena Belt</p>
       <p class="price-amount"><sup>€</sup>28</p>
-      <p class="price-sub">per person · Evenings & weekends</p>
+      <p class="price-sub">a persona · Sere e weekend</p>
       <ul class="price-features">
-        <li>Full belt access</li>
-        <li>2 hours dining</li>
-        <li>Miso soup included</li>
-        <li>Premium plates included</li>
+        <li>Accesso completo al nastro</li>
+        <li>2 ore al tavolo</li>
+        <li>Zuppa di miso inclusa</li>
+        <li>Piatti premium inclusi</li>
       </ul>
-      <a href="#contact" class="btn-outline" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem; border-color:#fff; color:#fff;">Book Dinner</a>
+      <a href="#contact" class="btn-outline" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem; border-color:#fff; color:#fff;">Prenota la Cena</a>
     </div>
 
     <div class="pricing-card">
-      <p class="price-label">Private Group</p>
-      <p class="price-tier">Group &amp; Events</p>
+      <p class="price-label">Gruppo Privato</p>
+      <p class="price-tier">Gruppi &amp; Eventi</p>
       <p class="price-amount"><sup>€</sup>35</p>
-      <p class="price-sub">per person · min 10 guests</p>
+      <p class="price-sub">a persona · min 10 ospiti</p>
       <ul class="price-features">
-        <li>Private belt section</li>
-        <li>2.5 hours dining</li>
-        <li>Welcome drinks</li>
-        <li>Dedicated chef</li>
+        <li>Sezione nastro privata</li>
+        <li>2,5 ore al tavolo</li>
+        <li>Benvenuto con drink</li>
+        <li>Chef dedicato</li>
       </ul>
-      <a href="#contact" class="btn-primary" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem;">Enquire</a>
+      <a href="#contact" class="btn-primary" style="display:inline-block; font-size:0.82rem; padding:0.7rem 1.5rem;">Richiedi Info</a>
     </div>
 
   </div>
@@ -841,100 +555,87 @@
 
 <!-- GALLERY -->
 <section id="gallery">
-  <p class="section-label">Inside Kaiten</p>
-  <h2>A Feast for the Eyes</h2>
+  <p class="section-label">Dentro Kaiten</p>
+  <h2>Un Festino per gli Occhi</h2>
   <div class="gallery-grid">
-
-    <div class="gallery-cell g1">
-      <img src="image8.jpg" alt="Restaurant interior" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image8.jpg</div>
-    </div>
-    <div class="gallery-cell g2">
-      <img src="image9.jpg" alt="Sushi on belt" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image9.jpg</div>
-    </div>
-    <div class="gallery-cell g3">
-      <img src="image10.jpg" alt="Chef at work" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image10.jpg</div>
-    </div>
-    <div class="gallery-cell g4">
-      <img src="image11.jpg" alt="Close-up plate" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image11.jpg</div>
-    </div>
-    <div class="gallery-cell g5">
-      <img src="image12.jpg" alt="Drinks" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image12.jpg</div>
-    </div>
-    <div class="gallery-cell g6">
-      <img src="image13.jpg" alt="Happy guests" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-      <div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image13.jpg</div>
-    </div>
-
+    <div class="gallery-cell g1"><img src="image8.jpg" alt="Interno ristorante" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image8.jpg</div></div>
+    <div class="gallery-cell g2"><img src="image9.jpg" alt="Sushi sul nastro" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image9.jpg</div></div>
+    <div class="gallery-cell g3"><img src="image10.jpg" alt="Chef al lavoro" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image10.jpg</div></div>
+    <div class="gallery-cell g4"><img src="image11.jpg" alt="Piatto in primo piano" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image11.jpg</div></div>
+    <div class="gallery-cell g5"><img src="image12.jpg" alt="Bevande" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image12.jpg</div></div>
+    <div class="gallery-cell g6"><img src="image13.jpg" alt="Ospiti felici" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="gallery-cell-placeholder" style="display:none;"><div class="img-icon">🖼</div>image13.jpg</div></div>
   </div>
 </section>
 
-<!-- CONTACT / HOURS -->
+<!-- CONTACT -->
 <section id="contact">
   <div>
-    <p class="section-label">Visit Us</p>
-    <h2>Hours &amp; Location</h2>
+    <p class="section-label">Vieni a Trovarci</p>
+    <h2>Orari &amp; Posizione</h2>
     <table class="hours-table">
-      <tr><td>Monday – Thursday</td><td>12:00 – 22:00</td></tr>
-      <tr><td>Friday</td><td>12:00 – 23:00</td></tr>
-      <tr><td>Saturday</td><td>11:30 – 23:00</td></tr>
-      <tr><td>Sunday</td><td>11:30 – 21:30</td></tr>
+      <tr><td>Lunedì – Giovedì</td><td>12:00 – 22:00</td></tr>
+      <tr><td>Venerdì</td><td>12:00 – 23:00</td></tr>
+      <tr><td>Sabato</td><td>11:30 – 23:00</td></tr>
+      <tr><td>Domenica</td><td>11:30 – 21:30</td></tr>
     </table>
     <div class="contact-info">
-      <div class="contact-line"><div class="contact-dot"></div>Via Roma 42, 00100 Rome, Italy</div>
+      <div class="contact-line"><div class="contact-dot"></div>Via Roma 42, 00100 Roma, Italia</div>
       <div class="contact-line"><div class="contact-dot"></div>+39 06 1234 5678</div>
-      <div class="contact-line"><div class="contact-dot"></div>hello@kaitensushi.it</div>
+      <div class="contact-line"><div class="contact-dot"></div>ciao@kaitensushi.it</div>
     </div>
   </div>
-
   <div>
-    <p class="section-label">Reservations</p>
-    <h2>Book Your Seat</h2>
+    <p class="section-label">Prenotazioni</p>
+    <h2>Prenota il Tuo Posto</h2>
     <form class="reservation-form" onsubmit="return false;">
       <div class="form-row">
-        <input type="text" placeholder="First name">
-        <input type="text" placeholder="Last name">
+        <input type="text" placeholder="Nome">
+        <input type="text" placeholder="Cognome">
       </div>
-      <input type="email" placeholder="Email address">
+      <input type="email" placeholder="Indirizzo email">
       <div class="form-row">
         <input type="date">
         <select>
-          <option value="">Select time</option>
-          <option>12:00</option>
-          <option>12:30</option>
-          <option>13:00</option>
-          <option>19:00</option>
-          <option>19:30</option>
-          <option>20:00</option>
-          <option>20:30</option>
-          <option>21:00</option>
+          <option value="">Seleziona orario</option>
+          <option>12:00</option><option>12:30</option><option>13:00</option>
+          <option>19:00</option><option>19:30</option><option>20:00</option>
+          <option>20:30</option><option>21:00</option>
         </select>
       </div>
       <select>
-        <option value="">Number of guests</option>
-        <option>1 guest</option>
-        <option>2 guests</option>
-        <option>3 guests</option>
-        <option>4 guests</option>
-        <option>5 guests</option>
-        <option>6+ guests</option>
+        <option value="">Numero di ospiti</option>
+        <option>1 ospite</option><option>2 ospiti</option><option>3 ospiti</option>
+        <option>4 ospiti</option><option>5 ospiti</option><option>6+ ospiti</option>
       </select>
-      <button type="submit" class="btn-primary" style="margin-top:0.5rem;">Confirm Reservation</button>
+      <button type="submit" class="btn-primary" style="margin-top:0.5rem;">Conferma Prenotazione</button>
     </form>
   </div>
 </section>
 
 <footer>
-  <p>© 2025 <span>Kaiten Sushi</span> · All You Can Eat · Rome · Made with 🍣</p>
+  <p>© 2025 <span>Kaiten Sushi</span> · All You Can Eat · Roma · Fatto con 🍣</p>
 </footer>
 
 <script>
+// ── HAMBURGER MENU ──
+const hamburger = document.getElementById('hamburger');
+const drawer = document.getElementById('mobileDrawer');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  drawer.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+});
+
+document.querySelectorAll('.drawer-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    drawer.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+
 // ── CONVEYOR BELT ──
-// Each plate: { color class, emoji sushi SVG type }
 const plates = [
   { cls: 'plate-white',  type: 'nigiri-salmon' },
   { cls: 'plate-tan',    type: 'maki' },
@@ -952,101 +653,36 @@ const plates = [
 
 function makeSushi(type) {
   const svgs = {
-    'nigiri-salmon': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/>
-      <ellipse cx="22" cy="22" rx="13" ry="7" fill="#FA8C4A"/>
-      <ellipse cx="22" cy="20" rx="9" ry="4" fill="#FF9E5E" opacity="0.7"/>
-    </svg>`,
-    'nigiri-tuna': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/>
-      <ellipse cx="22" cy="22" rx="13" ry="7" fill="#C0405A"/>
-      <ellipse cx="22" cy="20" rx="9" ry="4" fill="#D4607A" opacity="0.7"/>
-    </svg>`,
-    'nigiri-prawn': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/>
-      <ellipse cx="22" cy="22" rx="13" ry="7" fill="#E87050"/>
-      <path d="M14 20 Q22 16 30 20" stroke="#F09070" stroke-width="1.5" fill="none"/>
-      <path d="M16 23 Q22 19 28 23" stroke="#F09070" stroke-width="1.5" fill="none"/>
-    </svg>`,
-    'nigiri-eel': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/>
-      <ellipse cx="22" cy="22" rx="13" ry="7" fill="#7A4A20"/>
-      <rect x="14" y="24" width="16" height="3" rx="1" fill="#2B2B2B" opacity="0.3"/>
-    </svg>`,
-    'maki': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="22" cy="22" r="14" fill="#2B2B2B"/>
-      <circle cx="22" cy="22" r="11" fill="#F5F0E8"/>
-      <circle cx="22" cy="22" r="7" fill="#FA8C4A"/>
-      <circle cx="22" cy="22" r="4" fill="#1A8A3A"/>
-    </svg>`,
-    'maki-spicy': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="22" cy="22" r="14" fill="#2B2B2B"/>
-      <circle cx="22" cy="22" r="11" fill="#F5F0E8"/>
-      <circle cx="22" cy="22" r="7" fill="#C0405A"/>
-      <circle cx="22" cy="22" r="3" fill="#FF6040"/>
-    </svg>`,
-    'temaki': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 36 L22 8 L34 36 Z" fill="#2B2B2B"/>
-      <path d="M13 33 L22 12 L31 33 Z" fill="#F5F0E8"/>
-      <ellipse cx="22" cy="28" rx="7" ry="5" fill="#FA8C4A"/>
-      <path d="M18 24 Q22 20 26 24" stroke="#1A8A3A" stroke-width="2" fill="none"/>
-    </svg>`,
-    'inari': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="22" cy="25" rx="14" ry="9" fill="#C87030"/>
-      <ellipse cx="22" cy="24" rx="12" ry="7" fill="#E08040"/>
-      <ellipse cx="22" cy="22" rx="9" ry="5" fill="#D06020"/>
-      <ellipse cx="22" cy="21" rx="6" ry="3" fill="#F5F0E8" opacity="0.9"/>
-    </svg>`,
-    'gunkan': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="10" y="26" width="24" height="10" rx="4" fill="#F5F0E8"/>
-      <rect x="9" y="18" width="26" height="12" rx="2" fill="#2B2B2B"/>
-      <ellipse cx="22" cy="18" rx="12" ry="5" fill="#F5A020"/>
-      <circle cx="18" cy="17" r="2" fill="#FF6040"/>
-      <circle cx="22" cy="16" r="2" fill="#FF6040"/>
-      <circle cx="26" cy="17" r="2" fill="#FF6040"/>
-    </svg>`,
-    'roll': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="18" width="32" height="12" rx="6" fill="#2B2B2B"/>
-      <rect x="8" y="20" width="28" height="8" rx="4" fill="#F5F0E8"/>
-      <rect x="10" y="21" width="24" height="6" rx="3" fill="#FA8C4A"/>
-      <rect x="13" y="22" width="18" height="4" rx="2" fill="#1A8A3A"/>
-    </svg>`,
+    'nigiri-salmon': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/><ellipse cx="22" cy="22" rx="13" ry="7" fill="#FA8C4A"/><ellipse cx="22" cy="20" rx="9" ry="4" fill="#FF9E5E" opacity="0.7"/></svg>`,
+    'nigiri-tuna': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/><ellipse cx="22" cy="22" rx="13" ry="7" fill="#C0405A"/><ellipse cx="22" cy="20" rx="9" ry="4" fill="#D4607A" opacity="0.7"/></svg>`,
+    'nigiri-prawn': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/><ellipse cx="22" cy="22" rx="13" ry="7" fill="#E87050"/><path d="M14 20 Q22 16 30 20" stroke="#F09070" stroke-width="1.5" fill="none"/><path d="M16 23 Q22 19 28 23" stroke="#F09070" stroke-width="1.5" fill="none"/></svg>`,
+    'nigiri-eel': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="25" width="28" height="10" rx="5" fill="#F5F0E8"/><ellipse cx="22" cy="22" rx="13" ry="7" fill="#7A4A20"/><rect x="14" y="24" width="16" height="3" rx="1" fill="#2B2B2B" opacity="0.3"/></svg>`,
+    'maki': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="14" fill="#2B2B2B"/><circle cx="22" cy="22" r="11" fill="#F5F0E8"/><circle cx="22" cy="22" r="7" fill="#FA8C4A"/><circle cx="22" cy="22" r="4" fill="#1A8A3A"/></svg>`,
+    'maki-spicy': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="14" fill="#2B2B2B"/><circle cx="22" cy="22" r="11" fill="#F5F0E8"/><circle cx="22" cy="22" r="7" fill="#C0405A"/><circle cx="22" cy="22" r="3" fill="#FF6040"/></svg>`,
+    'temaki': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><path d="M10 36 L22 8 L34 36 Z" fill="#2B2B2B"/><path d="M13 33 L22 12 L31 33 Z" fill="#F5F0E8"/><ellipse cx="22" cy="28" rx="7" ry="5" fill="#FA8C4A"/><path d="M18 24 Q22 20 26 24" stroke="#1A8A3A" stroke-width="2" fill="none"/></svg>`,
+    'inari': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><ellipse cx="22" cy="25" rx="14" ry="9" fill="#C87030"/><ellipse cx="22" cy="24" rx="12" ry="7" fill="#E08040"/><ellipse cx="22" cy="22" rx="9" ry="5" fill="#D06020"/><ellipse cx="22" cy="21" rx="6" ry="3" fill="#F5F0E8" opacity="0.9"/></svg>`,
+    'gunkan': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="26" width="24" height="10" rx="4" fill="#F5F0E8"/><rect x="9" y="18" width="26" height="12" rx="2" fill="#2B2B2B"/><ellipse cx="22" cy="18" rx="12" ry="5" fill="#F5A020"/><circle cx="18" cy="17" r="2" fill="#FF6040"/><circle cx="22" cy="16" r="2" fill="#FF6040"/><circle cx="26" cy="17" r="2" fill="#FF6040"/></svg>`,
+    'roll': `<svg viewBox="0 0 44 44" class="sushi-svg" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="18" width="32" height="12" rx="6" fill="#2B2B2B"/><rect x="8" y="20" width="28" height="8" rx="4" fill="#F5F0E8"/><rect x="10" y="21" width="24" height="6" rx="3" fill="#FA8C4A"/><rect x="13" y="22" width="18" height="4" rx="2" fill="#1A8A3A"/></svg>`,
   };
   return svgs[type] || svgs['maki'];
 }
 
 function buildBelt() {
   const wrapper = document.getElementById('platesWrapper');
-  // Build two identical sets for seamless loop
   let html = '';
   for (let set = 0; set < 2; set++) {
     plates.forEach(p => {
-      html += `<div class="plate-item">
-        <div class="plate ${p.cls}">
-          ${makeSushi(p.type)}
-        </div>
-      </div>`;
+      html += `<div class="plate-item"><div class="plate ${p.cls}">${makeSushi(p.type)}</div></div>`;
     });
   }
   wrapper.innerHTML = html;
-
-  // Measure one set width and set animation accordingly
   requestAnimationFrame(() => {
-    const totalItems = plates.length;
-    const itemWidth = 72 + 56; // plate width + margin*2
-    const setWidth = totalItems * itemWidth;
-    wrapper.style.animation = 'none';
-    wrapper.style.transform = 'translateX(0)';
-    // Custom keyframe for exact half
+    const itemWidth = 72 + 56;
+    const setWidth = plates.length * itemWidth;
     const styleEl = document.createElement('style');
-    styleEl.textContent = `
-      @keyframes ride {
-        from { transform: translateX(0); }
-        to   { transform: translateX(-${setWidth}px); }
-      }
-    `;
+    styleEl.textContent = `@keyframes ride { from { transform: translateX(0); } to { transform: translateX(-${setWidth}px); } }`;
     document.head.appendChild(styleEl);
-    // re-apply
+    wrapper.style.animation = 'none';
     void wrapper.offsetWidth;
     wrapper.style.animation = 'ride 30s linear infinite';
   });
