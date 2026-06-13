@@ -156,8 +156,8 @@
   }
   h1 {
     font-family: 'Zen Antique Soft', serif;
-    font-size: clamp(3.5rem, 7vw, 6rem);
-    line-height: 1.05;
+    font-size: clamp(2rem, 7vw, 6rem);
+    line-height: 1.1;
     color: var(--charcoal);
     margin-bottom: 1.5rem;
   }
@@ -296,7 +296,8 @@
   .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5px; margin-top: 3rem; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.06); }
   .menu-card { background: #242424; padding: 2rem; transition: background 0.2s; }
   .menu-card:hover { background: #2C2C2C; }
-  .menu-card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; margin-bottom: 1.2rem; display: block; border-radius: 2px; }
+  .menu-card-img-wrap { width: 100%; aspect-ratio: 4/3; overflow: hidden; margin-bottom: 1.2rem; border-radius: 2px; position: relative; }
+  .menu-card-img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
   .menu-card-img-placeholder { width: 100%; aspect-ratio: 4/3; background: rgba(255,255,255,0.05); border: 1.5px dashed rgba(255,255,255,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1.2rem; border-radius: 2px; color: rgba(255,255,255,0.3); font-size: 0.8rem; gap: 0.4rem; }
   .img-icon { font-size: 1.8rem; opacity: 0.3; }
   .menu-category { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: #E07060; margin-bottom: 0.4rem; font-weight: 500; }
@@ -349,6 +350,20 @@
   }
   .form-row input:focus, .reservation-form input:focus, .reservation-form select:focus { border-color: rgba(192,57,43,0.6); }
   .reservation-form select option { background: #1C1C1C; }
+
+  /* date placeholder trick */
+  .date-wrap { position: relative; flex: 1; }
+  .date-wrap input[type="date"] { width: 100%; color: #fff; }
+  .date-wrap input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.6); cursor: pointer; }
+  .date-placeholder {
+    position: absolute;
+    left: 1rem; top: 50%; transform: translateY(-50%);
+    font-size: 0.9rem; color: rgba(255,255,255,0.45);
+    pointer-events: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.15s;
+  }
+  .date-wrap input[type="date"].has-value + .date-placeholder { opacity: 0; }
 
   /* ── FOOTER ── */
   footer { background: #111; color: rgba(255,255,255,0.4); text-align: center; padding: 2rem; font-size: 0.82rem; letter-spacing: 0.08em; }
@@ -452,7 +467,9 @@
   <div class="menu-grid">
 
     <div class="menu-card">
-      <img src="image2.jpg" alt="Nigiri Salmone" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image2.jpg" alt="Nigiri Salmone" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍣</span>image2.jpg</div>
       <p class="menu-category">Nigiri</p>
       <h3>Nigiri Salmone</h3>
@@ -460,7 +477,9 @@
     </div>
 
     <div class="menu-card">
-      <img src="image3.jpg" alt="Dragon Roll" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image3.jpg" alt="Dragon Roll" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍱</span>image3.jpg</div>
       <p class="menu-category">Maki Roll</p>
       <h3>Dragon Roll</h3>
@@ -468,7 +487,9 @@
     </div>
 
     <div class="menu-card">
-      <img src="image4.jpg" alt="Sashimi Tonno" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image4.jpg" alt="Sashimi Tonno" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🐟</span>image4.jpg</div>
       <p class="menu-category">Sashimi</p>
       <h3>Tonno Pinna Blu</h3>
@@ -476,7 +497,9 @@
     </div>
 
     <div class="menu-card">
-      <img src="image5.jpg" alt="Edamame e Miso" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image5.webp" alt="Edamame e Miso" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🥗</span>image5.jpg</div>
       <p class="menu-category">Contorni</p>
       <h3>Edamame &amp; Miso</h3>
@@ -484,7 +507,9 @@
     </div>
 
     <div class="menu-card">
-      <img src="image6.jpg" alt="Spicy Tuna Roll" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image6.jpg" alt="Spicy Tuna Roll" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🌶</span>image6.jpg</div>
       <p class="menu-category">Maki Roll</p>
       <h3>Spicy Tuna Crunch</h3>
@@ -492,7 +517,9 @@
     </div>
 
     <div class="menu-card">
-      <img src="image7.jpg" alt="Gelato Matcha" class="menu-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="menu-card-img-wrap">
+        <img src="image7.jpg" alt="Gelato Matcha" class="menu-card-img" onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+      </div>
       <div class="menu-card-img-placeholder" style="display:none;"><span class="img-icon">🍵</span>image7.jpg</div>
       <p class="menu-category">Dessert</p>
       <h3>Gelato al Matcha</h3>
@@ -587,14 +614,17 @@
   <div>
     <p class="section-label">Prenotazioni</p>
     <h2>Prenota il Tuo Posto</h2>
-    <form class="reservation-form" onsubmit="return false;">
+    <form class="reservation-form" id="reservationForm" onsubmit="return false;">
       <div class="form-row">
         <input type="text" placeholder="Nome">
         <input type="text" placeholder="Cognome">
       </div>
       <input type="email" placeholder="Indirizzo email">
       <div class="form-row">
-        <input type="date">
+        <div class="date-wrap">
+          <input type="date" id="dateInput" placeholder="Seleziona una data">
+          <span class="date-placeholder" id="datePlaceholder">Seleziona una data</span>
+        </div>
         <select>
           <option value="">Seleziona orario</option>
           <option>12:00</option><option>12:30</option><option>13:00</option>
@@ -607,8 +637,13 @@
         <option>1 ospite</option><option>2 ospiti</option><option>3 ospiti</option>
         <option>4 ospiti</option><option>5 ospiti</option><option>6+ ospiti</option>
       </select>
-      <button type="submit" class="btn-primary" style="margin-top:0.5rem;">Conferma Prenotazione</button>
+      <button type="submit" class="btn-primary" id="submitBtn" style="margin-top:0.5rem;">Conferma Prenotazione</button>
     </form>
+    <div id="successMsg" style="display:none; margin-top:1.5rem; text-align:center; padding:2rem; border: 1px solid rgba(255,255,255,0.15); border-radius:4px; background:rgba(255,255,255,0.05);">
+      <div style="font-family:'Zen Antique Soft',serif; font-size:2.5rem; color:var(--red); margin-bottom:0.5rem;">✓</div>
+      <div style="font-family:'Zen Antique Soft',serif; font-size:1.6rem; color:#fff; margin-bottom:0.4rem;">Confermato!</div>
+      <div style="font-size:0.88rem; color:rgba(255,255,255,0.55); font-weight:300;">La tua prenotazione è stata ricevuta.<br>Ti contatteremo presto — <em>arigatō gozaimasu</em> 🍣</div>
+    </div>
   </div>
 </section>
 
@@ -634,6 +669,33 @@ document.querySelectorAll('.drawer-link').forEach(link => {
     document.body.style.overflow = '';
   });
 });
+
+// ── DATE PLACEHOLDER ──
+const dateInput = document.getElementById('dateInput');
+const datePlaceholder = document.getElementById('datePlaceholder');
+if (dateInput) {
+  dateInput.addEventListener('change', () => {
+    if (dateInput.value) {
+      dateInput.classList.add('has-value');
+    } else {
+      dateInput.classList.remove('has-value');
+    }
+  });
+}
+
+// ── FORM SUBMIT ──
+const form = document.getElementById('reservationForm');
+const successMsg = document.getElementById('successMsg');
+if (form) {
+  form.addEventListener('submit', () => {
+    form.style.display = 'none';
+    successMsg.style.display = 'block';
+  });
+  document.getElementById('submitBtn').addEventListener('click', () => {
+    form.style.display = 'none';
+    successMsg.style.display = 'block';
+  });
+}
 
 // ── CONVEYOR BELT ──
 const plates = [
